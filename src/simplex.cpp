@@ -1,22 +1,24 @@
 #include "include/simplex.h"
 
 
+// aprovads :)
 bool find_entry_var(float** matrix,int lines,int columns, int* leaving)
 {
 	bool _ret = false;
 
-	int min = std::numeric_limits<int>::min();
+	int min = std::numeric_limits<float>::min();
 
-	for (int i = 0; i < columns; i++)
+	int i = 0;
+	for (i; i < columns; i++)
 	{
 		if (matrix[0][i] < 0)
 		{
 			float entry_var = abs(matrix[0][i]);
 
 			if (entry_var > min)
-			{
+			{				
 				min = entry_var;
-				*leaving = i;				
+				*leaving = i;
 			}
 
 			_ret = true;
@@ -31,60 +33,81 @@ int find_leaving_var(float** matrix,int lines,int columns, int* leaving)
 	int _ret = 0;
 
 	float min = std::numeric_limits<float>::max();
-
+	
 	for (int i = 1; i < lines; i++)
-	{
+	{		
 		if (matrix[i][*leaving] != 0)
 		{
-			if ((matrix[i][columns]/matrix[i][*leaving]) < min )
+			if ((float)(matrix[i][columns-1]/matrix[i][*leaving]) < min )
 			{
-				min  = (matrix[i][*leaving]/matrix[i][columns]);
-				_ret = i;
+				min  = (float)(matrix[i][columns-1]/matrix[i][*leaving]);
+				_ret = i;				
 			}	
-		}
-		
+		}	
 	}
+	
 
 	return _ret;
 }
 void erase_pivot_column(float** matrix,int lines,int columns,int piv ,int* leaving)
 {
 	
-	int j = piv++;
+	int j = piv;
+	j= (j+1) % lines;
+
+	float pivot_value = matrix[piv][*leaving];
 
 	while (j != piv)
 	{
 		if (matrix[j][*leaving] != 0)
 		{
-			if ( (matrix[j][*leaving] - matrix[piv][*leaving]) == 0 )
+			if ( (matrix[j][*leaving] - pivot_value) == 0 )
 			{
-				for(int i = *leaving; i < lines; i++)
+				for(int i = *leaving; i <= columns; i++)
 				{
 					matrix[j][i] = matrix[j][i] - matrix[piv][i];
 				}
 			}
-			else
-			{
-				float factor = matrix[j][*leaving]/matrix[piv][*leaving];
-				for(int i = *leaving; i < lines; i++)
+			else if (matrix[j][*leaving] < 0)
+			{	
+				float factor = (float)((abs(matrix[j][*leaving]))/pivot_value);			
+				for(int i = *leaving; i <=columns; i++)
 				{
-					matrix[j][i] = matrix[j][i] +  (factor * matrix[piv][i]);
+					matrix[j][i] = matrix[j][i] + (factor * matrix[piv][i]);
+				}
+			}
+			else if (matrix[j][*leaving] > 0)
+			{
+				float factor = (float)((abs(matrix[j][*leaving]))/pivot_value);			
+				for(int i = *leaving; i <=columns; i++)
+				{
+					matrix[j][i] = matrix[j][i] - (factor * matrix[piv][i]);
 				}
 			}	
 		}			
 
 		j= (j+1) % lines;
-	}
+	}	
 
-		// pivot line  put 1
-	for (int i = *leaving; i < lines; i++)
+	for (int i = *leaving; i <= columns; i++)
 	{
-		matrix[piv][i] = matrix[piv][i]/matrix[piv][*leaving]; 
+		matrix[piv][i] = (float) matrix[piv][i]/pivot_value; 
 	}
+		
+	
+	for (int i = 0; i < lines; i++)
+	{
+		for (int j = 0; j < columns; j++)
+		{
+			printf("%.1f ",matrix[i][j] );
+		}
+		putchar('\n');
+	}
+
+	putchar('\n');
+	putchar('\n');
+	putchar('\n');
 }
-
-
-
 
 
 int* calc_simplex(float **matrix, int lines, int columns)
@@ -100,17 +123,20 @@ int* calc_simplex(float **matrix, int lines, int columns)
 	solution_position[0] = 0; // solution to Z 
 
 	while (_continue)
-	{
+	{		
 		_continue = find_entry_var(matrix, lines, columns, &leaving_var_colum);
-		
+
 		if (_continue)
 		{				
 			pivot 	  =	find_leaving_var(matrix, lines, columns,&leaving_var_colum);
 			solution_position[leaving_var_colum] = pivot;
 
-			erase_pivot_column(matrix, lines, columns,pivot ,&leaving_var_colum);
-		}
+			printf("pivot[%d][%d]\n",pivot,leaving_var_colum );	
 
+			erase_pivot_column(matrix, lines, columns,pivot ,&leaving_var_colum);
+
+		}
+		
 	}
 
 	// ou printar a solução

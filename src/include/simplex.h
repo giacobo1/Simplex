@@ -1,4 +1,7 @@
-// TODO: fazer um parser decente
+// TODO 0: Fazer um output decente (numero de iterações, onde as vars estão, etc..)
+// TODO 1: Fazer um parser decente
+// TODO 2: Documentar o codigo
+// TODO 3: Testar mais e otimizar o codigo.
 
 #ifndef SIMPLEX_H
 #define SIMPLEX_H
@@ -12,7 +15,7 @@
 #include <sstream>
 #include <limits>
 
-std::vector< std::vector<float> > readInput(const char *argv);
+//std::vector< std::vector<float> > readInput(const char *argv);
 
 int* calc_simplex(float** matrix,int lines, int columns);
 bool find_entry_var(float** matrix,int lines,int columns, int* leaving);
