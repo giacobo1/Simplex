@@ -1,0 +1,6 @@
+Objective
+z = 3.0 * X + 5.0 * Y
+Restriction
+X <= 4.0
+2.0 * Y <= 12.0
+3.0 * X + 2.0 * Y <= 18.0 
