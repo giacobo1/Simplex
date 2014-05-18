@@ -10,6 +10,18 @@ int main(int argc, char const *argv[])
 		float **matriz = parse_input_build_matrix(argv[1],&linha,&coluna);
 
 		calc_simplex(matriz, linha, coluna);
+
+
+		//printf("%d %d\n",linha, coluna);
+
+		/*
+		for (int i = 0; i < linha; i++)
+		{
+			for (int j = 0; i < coluna; j++)
+				printf("%f ",matriz[i][j] );
+
+			putchar('\n');
+		}*/
 		
 
 

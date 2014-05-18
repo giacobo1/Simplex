@@ -41,12 +41,12 @@ float ** parse_input_build_matrix(const char *argv, int *l, int *c)
     		for (int i = 0; i < lines; ++i)matrix[i] = new float[columns];
     	}
     	else if (!strcmp(input_line,"Restrictions"))
-    	{
+    	{    		
     		rest = true;
     		index_line++;
     	}
     	else if (!strcmp(input_line,"maximize"))
-    	{
+    	{    		
     		max = true;
     	}
     	else if (!rest)
@@ -68,7 +68,7 @@ float ** parse_input_build_matrix(const char *argv, int *l, int *c)
 	    		}
     		}    		
     	}
-    	else if (!strcmp(input_line, "<=") || !strcmp(input_line, "=<") || !strcmp(input_line, "<")|| !strcmp(input_line, ">") || !strcmp(input_line, "=") )
+    	else if (!strcmp(input_line, "<=") || !strcmp(input_line, ">=") || !strcmp(input_line, "<")|| !strcmp(input_line, ">") || !strcmp(input_line, "=") )
     	{
     		eq = true;
     	}
@@ -77,7 +77,7 @@ float ** parse_input_build_matrix(const char *argv, int *l, int *c)
     		if (strcmp(input_line,"+") > 0 || strcmp(input_line,"-") > 0 )
     		{
     			if (!eq)
-	    		{
+	    		{	    			
 	    			sscanf(input_line,"%f*X_%d",&coef, &index_column);
 	    			// assumindo que se passe de X_1 para cima..
 	    			matrix[index_line][index_column-1] = coef;
