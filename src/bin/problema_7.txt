@@ -1,4 +1,4 @@
-maximizer
+maximize
 4.0*X_1 + 3.0*X_2
 Restrictions
 1.0*X_1 + 1.0*X_2 <= 800.0

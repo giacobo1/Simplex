@@ -1,4 +1,4 @@
-maximizer
+maximize
 300.0*X_1 + 400.0*X_2 + 500.0*X_3
 Restrictions
 0.0*X_1 + 100000.0*X_2 + 200000*X_3 <= 12750000.0
