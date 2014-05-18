@@ -41,12 +41,12 @@ float ** parse_input_build_matrix(const char *argv, int *l, int *c)
     		for (int i = 0; i < lines; ++i)matrix[i] = new float[columns];
     	}
     	else if (!strcmp(input_line,"Restrictions"))
-    	{
+    	{    		
     		rest = true;
     		index_line++;
     	}
     	else if (!strcmp(input_line,"maximize"))
-    	{
+    	{    		
     		max = true;
     	}
     	else if (!rest)
@@ -68,7 +68,7 @@ float ** parse_input_build_matrix(const char *argv, int *l, int *c)
 	    		}
     		}    		
     	}
-    	else if (!strcmp(input_line, "<=") || !strcmp(input_line, "=<") || !strcmp(input_line, "<")|| !strcmp(input_line, ">"))
+    	else if (!strcmp(input_line, "<=") || !strcmp(input_line, ">=") || !strcmp(input_line, "<")|| !strcmp(input_line, ">") || !strcmp(input_line, "=") )
     	{
     		eq = true;
     	}
@@ -77,7 +77,7 @@ float ** parse_input_build_matrix(const char *argv, int *l, int *c)
     		if (strcmp(input_line,"+") > 0 || strcmp(input_line,"-") > 0 )
     		{
     			if (!eq)
-	    		{
+	    		{	    			
 	    			sscanf(input_line,"%f*X_%d",&coef, &index_column);
 	    			// assumindo que se passe de X_1 para cima..
 	    			matrix[index_line][index_column-1] = coef;
@@ -230,7 +230,7 @@ void erase_pivot_column(float** matrix,int lines,int columns,int piv ,int* leavi
 }
 
 
-int* calc_simplex(float **matrix, int lines, int columns)
+void calc_simplex(float **matrix, int lines, int columns)
 {
 
 	bool _continue = true;
@@ -239,10 +239,13 @@ int* calc_simplex(float **matrix, int lines, int columns)
 
 	int pivot = 0;
 
+	int step = 1;
+
 	int* solution_position = (int*)malloc(sizeof(int) * lines);
-
-	solution_position[0] = 0; // solution to Z 
-
+	
+	// nao sei por que o malloc/new nao estao zerando...
+	for (int i = 0; i < lines; i++)solution_position[i] = 0;	
+	
 	while (_continue)
 	{		
 		_continue = find_entry_var(matrix, lines, columns, &leaving_var_colum);
@@ -252,7 +255,7 @@ int* calc_simplex(float **matrix, int lines, int columns)
 			pivot 	  =	find_leaving_var(matrix, lines, columns,&leaving_var_colum);
 			solution_position[leaving_var_colum] = pivot;
 
-			printf("pivot[%d][%d]\n",pivot,leaving_var_colum );	
+			printf("Passo: %d\n",step++);	
 
 			erase_pivot_column(matrix, lines, columns,pivot ,&leaving_var_colum);
 
@@ -260,6 +263,20 @@ int* calc_simplex(float **matrix, int lines, int columns)
 		
 	}
 
-	// ou printar a solução
-	return solution_position;
+	printf("\tTotal: %.2f\n", matrix[0][columns-1]);
+
+	for (int i = 0; i < lines; i++)
+	{
+		
+		if (solution_position[i])
+		{
+			printf(" X_%d --> S_%d and X_%d = %.1f\n", i+1, solution_position[i],i+1, matrix[solution_position[i]][columns-1]);
+		}
+	}
+
+
+	free(solution_position);
+
+	//delete solution_position;
+
 }

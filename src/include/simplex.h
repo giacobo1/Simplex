@@ -18,7 +18,7 @@
 
 void erase_pivot_column(float** matrix,int lines,int columns,int piv ,int* leaving);
 bool find_entry_var(float** matrix,int lines,int columns, int* leaving);
-int* calc_simplex(float** matrix,int lines, int columns);
+void calc_simplex(float** matrix,int lines, int columns);
 int find_leaving_var(float** matrix,int lines,int  columns,int* leaving);
 float ** parse_input_build_matrix(const char *argv, int *l, int *c);
 #endif
